@@ -1,0 +1,2765 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.2.1">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="opentsdb" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">true</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="write 1k" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">10</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">100</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+      </ThreadGroup>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">[{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(20,40)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;count&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(70,80)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;avg&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(50,60)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;min&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(116,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;max&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(1400,2800)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;sum&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(90,100)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p95&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(100, 105)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p98&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(105,110)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p99&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(110,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p999&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.error&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(20,40)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;count&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.error&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(70,80)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;avg&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.error&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(50,60)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;min&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.error&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(116,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;max&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.error&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(1400,2800)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;sum&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.error&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(90,100)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p95&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.error&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(100, 105)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p98&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.error&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(105,110)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p99&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.error&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(110,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p999&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.max_memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(20,40)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;count&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.max_memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(70,80)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;avg&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.max_memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(50,60)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;min&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.max_memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(116,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;max&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.max_memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(1400,2800)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;sum&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.max_memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(90,100)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p95&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.max_memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(100, 105)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p98&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.max_memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(105,110)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p99&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.max_memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(110,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p999&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(20,40)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;count&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(70,80)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;avg&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(50,60)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;min&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(116,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;max&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(1400,2800)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;sum&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(90,100)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p95&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(100, 105)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p98&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(105,110)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p99&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(110,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p999&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.billed_duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(20,40)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;count&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.billed_duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(70,80)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;avg&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.billed_duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(50,60)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;min&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.billed_duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(116,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;max&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.billed_duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(1400,2800)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;sum&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.billed_duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(90,100)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p95&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.billed_duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(100, 105)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p98&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.billed_duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(105,110)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p99&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.billed_duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(110,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p999&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.invocations&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(20,40)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;count&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.invocations&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(70,80)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;avg&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.invocations&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(50,60)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;min&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.invocations&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(116,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;max&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.invocations&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(1400,2800)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;sum&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.invocations&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(90,100)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p95&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.invocations&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(100, 105)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p98&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.invocations&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(105,110)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p99&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.invocations&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(110,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p999&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+}]</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/api/put</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="read 100" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">100</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+      </ThreadGroup>
+      <hashTree>
+        <RandomController guiclass="RandomControlGui" testclass="RandomController" testname="Random Controller" enabled="true">
+          <intProp name="InterleaveControl.style">1</intProp>
+        </RandomController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;start&quot;: &quot;24h-ago&quot;,&#xd;
+	&quot;queries&quot;: [&#xd;
+		{&#xd;
+			&quot;aggregator&quot;: &quot;sum&quot;,&#xd;
+			&quot;metric&quot;: &quot;dashbird.invocation.invocations&quot;,&#xd;
+			&quot;tags&quot;: {&#xd;
+				&quot;stat&quot;: &quot;count&quot;&#xd;
+			}&#xd;
+		}&#xd;
+	]&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/query</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;start&quot;: &quot;24h-ago&quot;,&#xd;
+	&quot;queries&quot;: [&#xd;
+		{&#xd;
+			&quot;aggregator&quot;: &quot;sum&quot;,&#xd;
+			&quot;metric&quot;: &quot;dashbird.invocation.error&quot;,&#xd;
+			&quot;tags&quot;: {&#xd;
+				&quot;stat&quot;: &quot;count&quot;&#xd;
+			}&#xd;
+		}&#xd;
+	]&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/query</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;start&quot;: &quot;24h-ago&quot;,&#xd;
+	&quot;queries&quot;: [&#xd;
+		{&#xd;
+			&quot;aggregator&quot;: &quot;avg&quot;,&#xd;
+			&quot;metric&quot;: &quot;dashbird.invocation.duration&quot;,&#xd;
+			&quot;tags&quot;: {&#xd;
+				&quot;stat&quot;: &quot;avg&quot;&#xd;
+			}&#xd;
+		}&#xd;
+	]&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/query</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;start&quot;: &quot;24h-ago&quot;,&#xd;
+	&quot;queries&quot;: [&#xd;
+		{&#xd;
+			&quot;aggregator&quot;: &quot;avg&quot;,&#xd;
+			&quot;metric&quot;: &quot;dashbird.invocation.billed_duration&quot;,&#xd;
+			&quot;tags&quot;: {&#xd;
+				&quot;stat&quot;: &quot;avg&quot;&#xd;
+			}&#xd;
+		}&#xd;
+	]&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/query</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;start&quot;: &quot;24h-ago&quot;,&#xd;
+	&quot;queries&quot;: [&#xd;
+		{&#xd;
+			&quot;aggregator&quot;: &quot;avg&quot;,&#xd;
+			&quot;metric&quot;: &quot;dashbird.invocation.memory&quot;,&#xd;
+			&quot;tags&quot;: {&#xd;
+				&quot;stat&quot;: &quot;avg&quot;&#xd;
+			}&#xd;
+		}&#xd;
+	]&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/query</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;start&quot;: &quot;24h-ago&quot;,&#xd;
+	&quot;queries&quot;: [&#xd;
+		{&#xd;
+			&quot;aggregator&quot;: &quot;sum&quot;,&#xd;
+			&quot;metric&quot;: &quot;dashbird.invocation.invocations&quot;,&#xd;
+			&quot;tags&quot;: {&#xd;
+				&quot;stat&quot;: &quot;count&quot;&#xd;
+			}&#xd;
+		}&#xd;
+	]&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/query</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+      <PostThreadGroup guiclass="PostThreadGroupGui" testclass="PostThreadGroup" testname="cleanup" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+      </PostThreadGroup>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/api/query?start=24h-ago&amp;m=sum:dashbird.invocation.invocations</stringProp>
+          <stringProp name="HTTPSampler.method">DELETE</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/api/query?start=24h-ago&amp;m=sum:dashbird.invocation.duration</stringProp>
+          <stringProp name="HTTPSampler.method">DELETE</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/api/query?start=24h-ago&amp;m=sum:dashbird.invocation.memory</stringProp>
+          <stringProp name="HTTPSampler.method">DELETE</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/api/query?start=24h-ago&amp;m=sum:dashbird.invocation.error</stringProp>
+          <stringProp name="HTTPSampler.method">DELETE</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/api/query?start=24h-ago&amp;m=sum:dashbird.invocation.billed_duration</stringProp>
+          <stringProp name="HTTPSampler.method">DELETE</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/api/query?start=24h-ago&amp;m=sum:dashbird.invocation.max_memory</stringProp>
+          <stringProp name="HTTPSampler.method">DELETE</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="write 10k" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">100</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">100</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+      </ThreadGroup>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">[{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(20,40)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;count&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(70,80)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;avg&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(50,60)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;min&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(116,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;max&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(1400,2800)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;sum&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(90,100)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p95&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(100, 105)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p98&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(105,110)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p99&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(110,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p999&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.error&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(20,40)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;count&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.error&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(70,80)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;avg&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.error&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(50,60)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;min&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.error&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(116,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;max&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.error&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(1400,2800)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;sum&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.error&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(90,100)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p95&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.error&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(100, 105)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p98&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.error&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(105,110)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p99&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.error&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(110,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p999&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.max_memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(20,40)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;count&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.max_memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(70,80)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;avg&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.max_memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(50,60)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;min&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.max_memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(116,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;max&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.max_memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(1400,2800)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;sum&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.max_memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(90,100)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p95&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.max_memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(100, 105)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p98&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.max_memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(105,110)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p99&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.max_memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(110,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p999&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(20,40)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;count&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(70,80)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;avg&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(50,60)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;min&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(116,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;max&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(1400,2800)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;sum&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(90,100)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p95&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(100, 105)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p98&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(105,110)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p99&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(110,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p999&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.billed_duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(20,40)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;count&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.billed_duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(70,80)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;avg&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.billed_duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(50,60)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;min&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.billed_duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(116,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;max&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.billed_duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(1400,2800)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;sum&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.billed_duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(90,100)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p95&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.billed_duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(100, 105)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p98&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.billed_duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(105,110)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p99&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.billed_duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(110,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p999&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.invocations&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(20,40)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;count&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.invocations&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(70,80)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;avg&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.invocations&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(50,60)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;min&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.invocations&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(116,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;max&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.invocations&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(1400,2800)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;sum&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.invocations&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(90,100)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p95&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.invocations&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(100, 105)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p98&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.invocations&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(105,110)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p99&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.invocations&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(110,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p999&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+}]</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/api/put</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="read 1k" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1000</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+      </ThreadGroup>
+      <hashTree>
+        <RandomController guiclass="RandomControlGui" testclass="RandomController" testname="Random Controller" enabled="true">
+          <intProp name="InterleaveControl.style">1</intProp>
+        </RandomController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;start&quot;: &quot;24h-ago&quot;,&#xd;
+	&quot;queries&quot;: [&#xd;
+		{&#xd;
+			&quot;aggregator&quot;: &quot;sum&quot;,&#xd;
+			&quot;metric&quot;: &quot;dashbird.invocation.invocations&quot;,&#xd;
+			&quot;tags&quot;: {&#xd;
+				&quot;stat&quot;: &quot;count&quot;&#xd;
+			}&#xd;
+		}&#xd;
+	]&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/query</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;start&quot;: &quot;24h-ago&quot;,&#xd;
+	&quot;queries&quot;: [&#xd;
+		{&#xd;
+			&quot;aggregator&quot;: &quot;sum&quot;,&#xd;
+			&quot;metric&quot;: &quot;dashbird.invocation.error&quot;,&#xd;
+			&quot;tags&quot;: {&#xd;
+				&quot;stat&quot;: &quot;count&quot;&#xd;
+			}&#xd;
+		}&#xd;
+	]&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/query</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;start&quot;: &quot;24h-ago&quot;,&#xd;
+	&quot;queries&quot;: [&#xd;
+		{&#xd;
+			&quot;aggregator&quot;: &quot;avg&quot;,&#xd;
+			&quot;metric&quot;: &quot;dashbird.invocation.duration&quot;,&#xd;
+			&quot;tags&quot;: {&#xd;
+				&quot;stat&quot;: &quot;avg&quot;&#xd;
+			}&#xd;
+		}&#xd;
+	]&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/query</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;start&quot;: &quot;24h-ago&quot;,&#xd;
+	&quot;queries&quot;: [&#xd;
+		{&#xd;
+			&quot;aggregator&quot;: &quot;avg&quot;,&#xd;
+			&quot;metric&quot;: &quot;dashbird.invocation.billed_duration&quot;,&#xd;
+			&quot;tags&quot;: {&#xd;
+				&quot;stat&quot;: &quot;avg&quot;&#xd;
+			}&#xd;
+		}&#xd;
+	]&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/query</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;start&quot;: &quot;24h-ago&quot;,&#xd;
+	&quot;queries&quot;: [&#xd;
+		{&#xd;
+			&quot;aggregator&quot;: &quot;avg&quot;,&#xd;
+			&quot;metric&quot;: &quot;dashbird.invocation.memory&quot;,&#xd;
+			&quot;tags&quot;: {&#xd;
+				&quot;stat&quot;: &quot;avg&quot;&#xd;
+			}&#xd;
+		}&#xd;
+	]&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/query</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;start&quot;: &quot;24h-ago&quot;,&#xd;
+	&quot;queries&quot;: [&#xd;
+		{&#xd;
+			&quot;aggregator&quot;: &quot;sum&quot;,&#xd;
+			&quot;metric&quot;: &quot;dashbird.invocation.invocations&quot;,&#xd;
+			&quot;tags&quot;: {&#xd;
+				&quot;stat&quot;: &quot;count&quot;&#xd;
+			}&#xd;
+		}&#xd;
+	]&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/query</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+      <PostThreadGroup guiclass="PostThreadGroupGui" testclass="PostThreadGroup" testname="cleanup" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+      </PostThreadGroup>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/api/query?start=24h-ago&amp;m=sum:dashbird.invocation.invocations</stringProp>
+          <stringProp name="HTTPSampler.method">DELETE</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/api/query?start=24h-ago&amp;m=sum:dashbird.invocation.duration</stringProp>
+          <stringProp name="HTTPSampler.method">DELETE</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/api/query?start=24h-ago&amp;m=sum:dashbird.invocation.memory</stringProp>
+          <stringProp name="HTTPSampler.method">DELETE</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/api/query?start=24h-ago&amp;m=sum:dashbird.invocation.error</stringProp>
+          <stringProp name="HTTPSampler.method">DELETE</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/api/query?start=24h-ago&amp;m=sum:dashbird.invocation.billed_duration</stringProp>
+          <stringProp name="HTTPSampler.method">DELETE</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/api/query?start=24h-ago&amp;m=sum:dashbird.invocation.max_memory</stringProp>
+          <stringProp name="HTTPSampler.method">DELETE</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="write 25k" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">250</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">100</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+      </ThreadGroup>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">[{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(20,40)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;count&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(70,80)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;avg&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(50,60)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;min&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(116,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;max&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(1400,2800)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;sum&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(90,100)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p95&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(100, 105)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p98&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(105,110)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p99&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(110,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p999&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.error&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(20,40)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;count&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.error&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(70,80)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;avg&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.error&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(50,60)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;min&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.error&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(116,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;max&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.error&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(1400,2800)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;sum&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.error&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(90,100)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p95&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.error&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(100, 105)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p98&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.error&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(105,110)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p99&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.error&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(110,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p999&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.max_memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(20,40)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;count&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.max_memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(70,80)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;avg&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.max_memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(50,60)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;min&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.max_memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(116,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;max&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.max_memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(1400,2800)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;sum&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.max_memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(90,100)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p95&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.max_memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(100, 105)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p98&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.max_memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(105,110)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p99&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.max_memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(110,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p999&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(20,40)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;count&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(70,80)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;avg&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(50,60)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;min&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(116,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;max&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(1400,2800)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;sum&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(90,100)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p95&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(100, 105)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p98&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(105,110)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p99&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.memory&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(110,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p999&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.billed_duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(20,40)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;count&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.billed_duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(70,80)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;avg&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.billed_duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(50,60)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;min&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.billed_duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(116,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;max&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.billed_duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(1400,2800)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;sum&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.billed_duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(90,100)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p95&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.billed_duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(100, 105)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p98&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.billed_duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(105,110)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p99&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.billed_duration&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(110,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p999&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.invocations&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(20,40)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;count&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.invocations&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(70,80)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;avg&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.invocations&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(50,60)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;min&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.invocations&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(116,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;max&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.invocations&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(1400,2800)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;sum&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.invocations&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(90,100)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p95&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.invocations&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(100, 105)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p98&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.invocations&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(105,110)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p99&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+},{&#xd;
+	&quot;metric&quot;: &quot;dashbird.invocation.invocations&quot;,&#xd;
+	&quot;timestamp&quot;: ${__time()},&#xd;
+	&quot;value&quot;: ${__Random(110,120)},&#xd;
+	&quot;tags&quot;: {&#xd;
+		&quot;stat&quot;: &quot;p999&quot;,&#xd;
+		&quot;resource&quot;: &quot;5da97ff61dae9fea0ad1ad27&quot;,&#xd;
+		&quot;client&quot;: &quot;5a8f2db970ff7c0188da585a&quot;&#xd;
+	}&#xd;
+}]</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/api/put</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="read 2500" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">2500</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+      </ThreadGroup>
+      <hashTree>
+        <RandomController guiclass="RandomControlGui" testclass="RandomController" testname="Random Controller" enabled="true">
+          <intProp name="InterleaveControl.style">1</intProp>
+        </RandomController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;start&quot;: &quot;24h-ago&quot;,&#xd;
+	&quot;queries&quot;: [&#xd;
+		{&#xd;
+			&quot;aggregator&quot;: &quot;sum&quot;,&#xd;
+			&quot;metric&quot;: &quot;dashbird.invocation.invocations&quot;,&#xd;
+			&quot;tags&quot;: {&#xd;
+				&quot;stat&quot;: &quot;count&quot;&#xd;
+			}&#xd;
+		}&#xd;
+	]&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/query</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;start&quot;: &quot;24h-ago&quot;,&#xd;
+	&quot;queries&quot;: [&#xd;
+		{&#xd;
+			&quot;aggregator&quot;: &quot;sum&quot;,&#xd;
+			&quot;metric&quot;: &quot;dashbird.invocation.error&quot;,&#xd;
+			&quot;tags&quot;: {&#xd;
+				&quot;stat&quot;: &quot;count&quot;&#xd;
+			}&#xd;
+		}&#xd;
+	]&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/query</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;start&quot;: &quot;24h-ago&quot;,&#xd;
+	&quot;queries&quot;: [&#xd;
+		{&#xd;
+			&quot;aggregator&quot;: &quot;avg&quot;,&#xd;
+			&quot;metric&quot;: &quot;dashbird.invocation.duration&quot;,&#xd;
+			&quot;tags&quot;: {&#xd;
+				&quot;stat&quot;: &quot;avg&quot;&#xd;
+			}&#xd;
+		}&#xd;
+	]&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/query</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;start&quot;: &quot;24h-ago&quot;,&#xd;
+	&quot;queries&quot;: [&#xd;
+		{&#xd;
+			&quot;aggregator&quot;: &quot;avg&quot;,&#xd;
+			&quot;metric&quot;: &quot;dashbird.invocation.billed_duration&quot;,&#xd;
+			&quot;tags&quot;: {&#xd;
+				&quot;stat&quot;: &quot;avg&quot;&#xd;
+			}&#xd;
+		}&#xd;
+	]&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/query</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;start&quot;: &quot;24h-ago&quot;,&#xd;
+	&quot;queries&quot;: [&#xd;
+		{&#xd;
+			&quot;aggregator&quot;: &quot;avg&quot;,&#xd;
+			&quot;metric&quot;: &quot;dashbird.invocation.memory&quot;,&#xd;
+			&quot;tags&quot;: {&#xd;
+				&quot;stat&quot;: &quot;avg&quot;&#xd;
+			}&#xd;
+		}&#xd;
+	]&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/query</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;start&quot;: &quot;24h-ago&quot;,&#xd;
+	&quot;queries&quot;: [&#xd;
+		{&#xd;
+			&quot;aggregator&quot;: &quot;sum&quot;,&#xd;
+			&quot;metric&quot;: &quot;dashbird.invocation.invocations&quot;,&#xd;
+			&quot;tags&quot;: {&#xd;
+				&quot;stat&quot;: &quot;count&quot;&#xd;
+			}&#xd;
+		}&#xd;
+	]&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/query</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+      <PostThreadGroup guiclass="PostThreadGroupGui" testclass="PostThreadGroup" testname="cleanup" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+      </PostThreadGroup>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/api/query?start=24h-ago&amp;m=sum:dashbird.invocation.invocations</stringProp>
+          <stringProp name="HTTPSampler.method">DELETE</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/api/query?start=24h-ago&amp;m=sum:dashbird.invocation.duration</stringProp>
+          <stringProp name="HTTPSampler.method">DELETE</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/api/query?start=24h-ago&amp;m=sum:dashbird.invocation.memory</stringProp>
+          <stringProp name="HTTPSampler.method">DELETE</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/api/query?start=24h-ago&amp;m=sum:dashbird.invocation.error</stringProp>
+          <stringProp name="HTTPSampler.method">DELETE</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/api/query?start=24h-ago&amp;m=sum:dashbird.invocation.billed_duration</stringProp>
+          <stringProp name="HTTPSampler.method">DELETE</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/api/query?start=24h-ago&amp;m=sum:dashbird.invocation.max_memory</stringProp>
+          <stringProp name="HTTPSampler.method">DELETE</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+      </hashTree>
+      <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+        <collectionProp name="HeaderManager.headers">
+          <elementProp name="" elementType="Header">
+            <stringProp name="Header.name">Content-Type</stringProp>
+            <stringProp name="Header.value">application/json</stringProp>
+          </elementProp>
+        </collectionProp>
+      </HeaderManager>
+      <hashTree/>
+      <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
+        <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+          <collectionProp name="Arguments.arguments"/>
+        </elementProp>
+        <stringProp name="HTTPSampler.domain">35.171.169.92</stringProp>
+        <stringProp name="HTTPSampler.port"></stringProp>
+        <stringProp name="HTTPSampler.protocol">http</stringProp>
+        <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+        <stringProp name="HTTPSampler.path"></stringProp>
+        <stringProp name="HTTPSampler.concurrentPool">6</stringProp>
+        <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+        <stringProp name="HTTPSampler.response_timeout"></stringProp>
+      </ConfigTestElement>
+      <hashTree/>
+      <AuthManager guiclass="AuthPanel" testclass="AuthManager" testname="HTTP Authorization Manager" enabled="true">
+        <collectionProp name="AuthManager.auth_list">
+          <elementProp name="" elementType="Authorization">
+            <stringProp name="Authorization.url">http://35.171.169.92</stringProp>
+            <stringProp name="Authorization.username"></stringProp>
+            <stringProp name="Authorization.password"></stringProp>
+            <stringProp name="Authorization.domain"></stringProp>
+            <stringProp name="Authorization.realm"></stringProp>
+          </elementProp>
+        </collectionProp>
+        <boolProp name="AuthManager.controlledByThreadGroup">false</boolProp>
+      </AuthManager>
+      <hashTree/>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>

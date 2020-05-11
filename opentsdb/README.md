@@ -1,3 +1,0 @@
-# OpenTSDB
-
-## Setting up

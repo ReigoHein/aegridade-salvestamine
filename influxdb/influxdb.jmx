@@ -1,0 +1,1182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.2.1">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="influxdb" enabled="true">
+      <stringProp name="TestPlan.comments">Write 100k rows to influxdb</stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">true</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <PostThreadGroup guiclass="PostThreadGroupGui" testclass="PostThreadGroup" testname="cleanup" enabled="false">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+      </PostThreadGroup>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/api/v2/buckets/metrics_1m</stringProp>
+          <stringProp name="HTTPSampler.method">DELETE</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="TestPlan.comments">Delete bucket with old data</stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+	&quot;name&quot;: &quot;metrics_1m&quot;,&#xd;
+	&quot;retentionRules&quot;: [{&#xd;
+		&quot;type&quot;: &quot;expire&quot;,&#xd;
+		&quot;everySeconds&quot;: 86400&#xd;
+}	]&#xd;
+}&#xd;
+</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">application/json</stringProp>
+          <stringProp name="HTTPSampler.path">/api/v2/buckets</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="write 1k" enabled="false">
+        <stringProp name="TestPlan.comments">Simulate ECS tasks which push data to influx</stringProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">10</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">100</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.duration">600</stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+      </ThreadGroup>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">total_duration_count,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(20,40)} ${time}&#xd;
+total_duration_avg,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(70,80)} ${time}&#xd;
+total_duration_min,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(50,60)} ${time}&#xd;
+total_duration_max,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(116,120)} ${time}&#xd;
+total_duration_sum,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(1400,2800)} ${time}&#xd;
+total_duration_p95,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(90,100)} ${time}&#xd;
+total_duration_p98,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(100,105)} ${time}&#xd;
+total_duration_p99,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(105,110)} ${time}&#xd;
+total_duration_p999,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(110,120)} ${time}&#xd;
+total_error_count,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(20,40)} ${time}&#xd;
+total_error_avg,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(70,80)} ${time}&#xd;
+total_error_min,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(50,60)} ${time}&#xd;
+total_error_max,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(116,120)} ${time}&#xd;
+total_error_sum,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(1400,2800)} ${time}&#xd;
+total_error_p95,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(90,100)} ${time}&#xd;
+total_error_p98,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(100,105)} ${time}&#xd;
+total_error_p99,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(105,110)} ${time}&#xd;
+total_error_p999,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(110,120)} ${time}&#xd;
+total_invocations_count,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(20,40)} ${time}&#xd;
+total_invocations_avg,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(70,80)} ${time}&#xd;
+total_invocations_min,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(50,60)} ${time}&#xd;
+total_invocations_max,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(116,120)} ${time}&#xd;
+total_invocations_sum,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(1400,2800)} ${time}&#xd;
+total_invocations_p95,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(90,100)} ${time}&#xd;
+total_invocations_p98,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(100,105)} ${time}&#xd;
+total_invocations_p99,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(105,110)} ${time}&#xd;
+total_invocations_p999,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(110,120)} ${time}&#xd;
+total_billed_duration_count,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(20,40)} ${time}&#xd;
+total_billed_duration_avg,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(70,80)} ${time}&#xd;
+total_billed_duration_min,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(50,60)} ${time}&#xd;
+total_billed_duration_max,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(116,120)} ${time}&#xd;
+total_billed_duration_sum,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(1400,2800)} ${time}&#xd;
+total_billed_duration_p95,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(90,100)} ${time}&#xd;
+total_billed_duration_p98,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(100,105)} ${time}&#xd;
+total_billed_duration_p99,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(105,110)} ${time}&#xd;
+total_billed_duration_p999,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(110,120)} ${time}&#xd;
+total_max_memory_count,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(20,40)} ${time}&#xd;
+total_max_memory_avg,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(70,80)} ${time}&#xd;
+total_max_memory_min,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(50,60)} ${time}&#xd;
+total_max_memory_max,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(116,120)} ${time}&#xd;
+total_max_memory_sum,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(1400,2800)} ${time}&#xd;
+total_max_memory_p95,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(90,100)} ${time}&#xd;
+total_max_memory_p98,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(100,105)} ${time}&#xd;
+total_max_memory_p99,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(105,110)} ${time}&#xd;
+total_max_memory_p999,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(110,120)} ${time}&#xd;
+total_memory_count,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(20,40)} ${time}&#xd;
+total_memory_avg,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(70,80)} ${time}&#xd;
+total_memory_min,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(50,60)} ${time}&#xd;
+total_memory_max,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(116,120)} ${time}&#xd;
+total_memory_sum,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(1400,2800)} ${time}&#xd;
+total_memory_p95,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(90,100)} ${time}&#xd;
+total_memory_p98,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(100,105)} ${time}&#xd;
+total_memory_p99,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(105,110)} ${time}&#xd;
+total_memory_p999,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(110,120)} ${time}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/api/v2/write?org=34849bffb64202a2&amp;bucket=metrics_1m&amp;precision=ms</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="Variables" enabled="true">
+          <collectionProp name="Arguments.arguments">
+            <elementProp name="time" elementType="Argument">
+              <stringProp name="Argument.name">time</stringProp>
+              <stringProp name="Argument.value">${__time()}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+          </collectionProp>
+        </Arguments>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="read 100" enabled="false">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">100</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.duration">600</stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+      </ThreadGroup>
+      <hashTree>
+        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="json" enabled="true">
+          <collectionProp name="HeaderManager.headers">
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Content-Type</stringProp>
+              <stringProp name="Header.value">application/json</stringProp>
+            </elementProp>
+          </collectionProp>
+        </HeaderManager>
+        <hashTree/>
+        <RandomController guiclass="RandomControlGui" testclass="RandomController" testname="Random Controller" enabled="true">
+          <intProp name="InterleaveControl.style">1</intProp>
+        </RandomController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;query&quot;: &quot;from(bucket:\&quot;metrics_1m\&quot;) |&gt; range(start:-1h) |&gt; filter(fn:(r) =&gt; r._measurement == \&quot;total_invocations_count\&quot;) |&gt; aggregateWindow(every: 1m, fn: mean)&quot;&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/v2/query?org=34849bffb64202a2</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;query&quot;: &quot;from(bucket:\&quot;metrics_1m\&quot;) |&gt; range(start:-1h) |&gt; filter(fn:(r) =&gt; r._measurement == \&quot;total_errors_count\&quot;) |&gt; aggregateWindow(every: 1m, fn: mean)&quot;&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/v2/query?org=34849bffb64202a2</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;query&quot;: &quot;from(bucket:\&quot;metrics_1m\&quot;) |&gt; range(start:-1h) |&gt; filter(fn:(r) =&gt; r._measurement == \&quot;total_duration_avg\&quot;) |&gt; aggregateWindow(every: 1m, fn: mean)&quot;&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/v2/query?org=34849bffb64202a2</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;query&quot;: &quot;from(bucket:\&quot;metrics_1m\&quot;) |&gt; range(start:-1h) |&gt; filter(fn:(r) =&gt; r._measurement == \&quot;total_billed_duration_avg\&quot;) |&gt; aggregateWindow(every: 1m, fn: mean)&quot;&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/v2/query?org=34849bffb64202a2</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;query&quot;: &quot;from(bucket:\&quot;metrics_1m\&quot;) |&gt; range(start:-1h) |&gt; filter(fn:(r) =&gt; r._measurement == \&quot;total_memory_avg\&quot;) |&gt; aggregateWindow(every: 1m, fn: mean)&quot;&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/v2/query?org=34849bffb64202a2</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;query&quot;: &quot;from(bucket:\&quot;metrics_1m\&quot;) |&gt; range(start:-1h) |&gt; filter(fn:(r) =&gt; r._measurement == \&quot;total_memory_max\&quot;) |&gt; aggregateWindow(every: 1m, fn: mean)&quot;&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/v2/query?org=34849bffb64202a2</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+      <PostThreadGroup guiclass="PostThreadGroupGui" testclass="PostThreadGroup" testname="cleanup" enabled="false">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+      </PostThreadGroup>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/api/v2/buckets/metrics_1m</stringProp>
+          <stringProp name="HTTPSampler.method">DELETE</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="TestPlan.comments">Delete bucket with old data</stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+	&quot;name&quot;: &quot;metrics_1m&quot;,&#xd;
+	&quot;retentionRules&quot;: [{&#xd;
+		&quot;type&quot;: &quot;expire&quot;,&#xd;
+		&quot;everySeconds&quot;: 86400&#xd;
+}	]&#xd;
+}&#xd;
+</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">application/json</stringProp>
+          <stringProp name="HTTPSampler.path">/api/v2/buckets</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="write 10k" enabled="false">
+        <stringProp name="TestPlan.comments">Simulate ECS tasks which push data to influx</stringProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">100</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">100</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.duration">600</stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+      </ThreadGroup>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">total_duration_count,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(20,40)} ${time}&#xd;
+total_duration_avg,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(70,80)} ${time}&#xd;
+total_duration_min,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(50,60)} ${time}&#xd;
+total_duration_max,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(116,120)} ${time}&#xd;
+total_duration_sum,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(1400,2800)} ${time}&#xd;
+total_duration_p95,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(90,100)} ${time}&#xd;
+total_duration_p98,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(100,105)} ${time}&#xd;
+total_duration_p99,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(105,110)} ${time}&#xd;
+total_duration_p999,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(110,120)} ${time}&#xd;
+total_error_count,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(20,40)} ${time}&#xd;
+total_error_avg,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(70,80)} ${time}&#xd;
+total_error_min,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(50,60)} ${time}&#xd;
+total_error_max,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(116,120)} ${time}&#xd;
+total_error_sum,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(1400,2800)} ${time}&#xd;
+total_error_p95,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(90,100)} ${time}&#xd;
+total_error_p98,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(100,105)} ${time}&#xd;
+total_error_p99,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(105,110)} ${time}&#xd;
+total_error_p999,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(110,120)} ${time}&#xd;
+total_invocations_count,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(20,40)} ${time}&#xd;
+total_invocations_avg,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(70,80)} ${time}&#xd;
+total_invocations_min,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(50,60)} ${time}&#xd;
+total_invocations_max,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(116,120)} ${time}&#xd;
+total_invocations_sum,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(1400,2800)} ${time}&#xd;
+total_invocations_p95,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(90,100)} ${time}&#xd;
+total_invocations_p98,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(100,105)} ${time}&#xd;
+total_invocations_p99,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(105,110)} ${time}&#xd;
+total_invocations_p999,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(110,120)} ${time}&#xd;
+total_billed_duration_count,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(20,40)} ${time}&#xd;
+total_billed_duration_avg,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(70,80)} ${time}&#xd;
+total_billed_duration_min,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(50,60)} ${time}&#xd;
+total_billed_duration_max,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(116,120)} ${time}&#xd;
+total_billed_duration_sum,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(1400,2800)} ${time}&#xd;
+total_billed_duration_p95,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(90,100)} ${time}&#xd;
+total_billed_duration_p98,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(100,105)} ${time}&#xd;
+total_billed_duration_p99,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(105,110)} ${time}&#xd;
+total_billed_duration_p999,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(110,120)} ${time}&#xd;
+total_max_memory_count,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(20,40)} ${time}&#xd;
+total_max_memory_avg,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(70,80)} ${time}&#xd;
+total_max_memory_min,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(50,60)} ${time}&#xd;
+total_max_memory_max,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(116,120)} ${time}&#xd;
+total_max_memory_sum,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(1400,2800)} ${time}&#xd;
+total_max_memory_p95,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(90,100)} ${time}&#xd;
+total_max_memory_p98,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(100,105)} ${time}&#xd;
+total_max_memory_p99,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(105,110)} ${time}&#xd;
+total_max_memory_p999,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(110,120)} ${time}&#xd;
+total_memory_count,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(20,40)} ${time}&#xd;
+total_memory_avg,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(70,80)} ${time}&#xd;
+total_memory_min,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(50,60)} ${time}&#xd;
+total_memory_max,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(116,120)} ${time}&#xd;
+total_memory_sum,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(1400,2800)} ${time}&#xd;
+total_memory_p95,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(90,100)} ${time}&#xd;
+total_memory_p98,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(100,105)} ${time}&#xd;
+total_memory_p99,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(105,110)} ${time}&#xd;
+total_memory_p999,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(110,120)} ${time}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/api/v2/write?org=34849bffb64202a2&amp;bucket=metrics_1m&amp;precision=ms</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="Variables" enabled="true">
+          <collectionProp name="Arguments.arguments">
+            <elementProp name="time" elementType="Argument">
+              <stringProp name="Argument.name">time</stringProp>
+              <stringProp name="Argument.value">${__time()}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+          </collectionProp>
+        </Arguments>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="read 1k" enabled="false">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1000</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.duration">600</stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+      </ThreadGroup>
+      <hashTree>
+        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="json" enabled="true">
+          <collectionProp name="HeaderManager.headers">
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Content-Type</stringProp>
+              <stringProp name="Header.value">application/json</stringProp>
+            </elementProp>
+          </collectionProp>
+        </HeaderManager>
+        <hashTree/>
+        <RandomController guiclass="RandomControlGui" testclass="RandomController" testname="Random Controller" enabled="true">
+          <intProp name="InterleaveControl.style">1</intProp>
+        </RandomController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;query&quot;: &quot;from(bucket:\&quot;metrics_1m\&quot;) |&gt; range(start:-1h) |&gt; filter(fn:(r) =&gt; r._measurement == \&quot;total_invocations_count\&quot;) |&gt; aggregateWindow(every: 1m, fn: mean)&quot;&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/v2/query?org=34849bffb64202a2</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;query&quot;: &quot;from(bucket:\&quot;metrics_1m\&quot;) |&gt; range(start:-1h) |&gt; filter(fn:(r) =&gt; r._measurement == \&quot;total_errors_count\&quot;) |&gt; aggregateWindow(every: 1m, fn: mean)&quot;&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/v2/query?org=34849bffb64202a2</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;query&quot;: &quot;from(bucket:\&quot;metrics_1m\&quot;) |&gt; range(start:-1h) |&gt; filter(fn:(r) =&gt; r._measurement == \&quot;total_duration_avg\&quot;) |&gt; aggregateWindow(every: 1m, fn: mean)&quot;&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/v2/query?org=34849bffb64202a2</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;query&quot;: &quot;from(bucket:\&quot;metrics_1m\&quot;) |&gt; range(start:-1h) |&gt; filter(fn:(r) =&gt; r._measurement == \&quot;total_billed_duration_avg\&quot;) |&gt; aggregateWindow(every: 1m, fn: mean)&quot;&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/v2/query?org=34849bffb64202a2</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;query&quot;: &quot;from(bucket:\&quot;metrics_1m\&quot;) |&gt; range(start:-1h) |&gt; filter(fn:(r) =&gt; r._measurement == \&quot;total_memory_avg\&quot;) |&gt; aggregateWindow(every: 1m, fn: mean)&quot;&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/v2/query?org=34849bffb64202a2</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+      <PostThreadGroup guiclass="PostThreadGroupGui" testclass="PostThreadGroup" testname="cleanup" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+      </PostThreadGroup>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/api/v2/buckets/metrics_1m</stringProp>
+          <stringProp name="HTTPSampler.method">DELETE</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="TestPlan.comments">Delete bucket with old data</stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+	&quot;name&quot;: &quot;metrics_1m&quot;,&#xd;
+	&quot;retentionRules&quot;: [{&#xd;
+		&quot;type&quot;: &quot;expire&quot;,&#xd;
+		&quot;everySeconds&quot;: 86400&#xd;
+}	]&#xd;
+}&#xd;
+</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">application/json</stringProp>
+          <stringProp name="HTTPSampler.path">/api/v2/buckets</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="write 25k" enabled="true">
+        <stringProp name="TestPlan.comments">Simulate ECS tasks which push data to influx</stringProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">250</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">100</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.duration">600</stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+      </ThreadGroup>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">total_duration_count,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(20,40)} ${time}&#xd;
+total_duration_avg,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(70,80)} ${time}&#xd;
+total_duration_min,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(50,60)} ${time}&#xd;
+total_duration_max,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(116,120)} ${time}&#xd;
+total_duration_sum,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(1400,2800)} ${time}&#xd;
+total_duration_p95,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(90,100)} ${time}&#xd;
+total_duration_p98,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(100,105)} ${time}&#xd;
+total_duration_p99,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(105,110)} ${time}&#xd;
+total_duration_p999,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(110,120)} ${time}&#xd;
+total_error_count,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(20,40)} ${time}&#xd;
+total_error_avg,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(70,80)} ${time}&#xd;
+total_error_min,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(50,60)} ${time}&#xd;
+total_error_max,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(116,120)} ${time}&#xd;
+total_error_sum,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(1400,2800)} ${time}&#xd;
+total_error_p95,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(90,100)} ${time}&#xd;
+total_error_p98,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(100,105)} ${time}&#xd;
+total_error_p99,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(105,110)} ${time}&#xd;
+total_error_p999,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(110,120)} ${time}&#xd;
+total_invocations_count,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(20,40)} ${time}&#xd;
+total_invocations_avg,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(70,80)} ${time}&#xd;
+total_invocations_min,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(50,60)} ${time}&#xd;
+total_invocations_max,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(116,120)} ${time}&#xd;
+total_invocations_sum,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(1400,2800)} ${time}&#xd;
+total_invocations_p95,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(90,100)} ${time}&#xd;
+total_invocations_p98,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(100,105)} ${time}&#xd;
+total_invocations_p99,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(105,110)} ${time}&#xd;
+total_invocations_p999,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(110,120)} ${time}&#xd;
+total_billed_duration_count,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(20,40)} ${time}&#xd;
+total_billed_duration_avg,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(70,80)} ${time}&#xd;
+total_billed_duration_min,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(50,60)} ${time}&#xd;
+total_billed_duration_max,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(116,120)} ${time}&#xd;
+total_billed_duration_sum,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(1400,2800)} ${time}&#xd;
+total_billed_duration_p95,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(90,100)} ${time}&#xd;
+total_billed_duration_p98,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(100,105)} ${time}&#xd;
+total_billed_duration_p99,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(105,110)} ${time}&#xd;
+total_billed_duration_p999,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(110,120)} ${time}&#xd;
+total_max_memory_count,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(20,40)} ${time}&#xd;
+total_max_memory_avg,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(70,80)} ${time}&#xd;
+total_max_memory_min,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(50,60)} ${time}&#xd;
+total_max_memory_max,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(116,120)} ${time}&#xd;
+total_max_memory_sum,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(1400,2800)} ${time}&#xd;
+total_max_memory_p95,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(90,100)} ${time}&#xd;
+total_max_memory_p98,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(100,105)} ${time}&#xd;
+total_max_memory_p99,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(105,110)} ${time}&#xd;
+total_max_memory_p999,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(110,120)} ${time}&#xd;
+total_memory_count,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(20,40)} ${time}&#xd;
+total_memory_avg,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(70,80)} ${time}&#xd;
+total_memory_min,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(50,60)} ${time}&#xd;
+total_memory_max,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(116,120)} ${time}&#xd;
+total_memory_sum,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(1400,2800)} ${time}&#xd;
+total_memory_p95,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(90,100)} ${time}&#xd;
+total_memory_p98,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(100,105)} ${time}&#xd;
+total_memory_p99,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(105,110)} ${time}&#xd;
+total_memory_p999,client=5a8f2db970ff7c0188da585a,resource=5da97ff61dae9fea0ad1ad27,slot=60 value=${__Random(110,120)} ${time}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/api/v2/write?org=34849bffb64202a2&amp;bucket=metrics_1m&amp;precision=ms</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="Variables" enabled="true">
+          <collectionProp name="Arguments.arguments">
+            <elementProp name="time" elementType="Argument">
+              <stringProp name="Argument.name">time</stringProp>
+              <stringProp name="Argument.value">${__time()}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+          </collectionProp>
+        </Arguments>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="read 2.5k" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">2500</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.duration">600</stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+      </ThreadGroup>
+      <hashTree>
+        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="json" enabled="true">
+          <collectionProp name="HeaderManager.headers">
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Content-Type</stringProp>
+              <stringProp name="Header.value">application/json</stringProp>
+            </elementProp>
+          </collectionProp>
+        </HeaderManager>
+        <hashTree/>
+        <RandomController guiclass="RandomControlGui" testclass="RandomController" testname="Random Controller" enabled="true">
+          <intProp name="InterleaveControl.style">1</intProp>
+        </RandomController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;query&quot;: &quot;from(bucket:\&quot;metrics_1m\&quot;) |&gt; range(start:-1h) |&gt; filter(fn:(r) =&gt; r._measurement == \&quot;total_invocations_count\&quot;) |&gt; aggregateWindow(every: 1m, fn: mean)&quot;&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/v2/query?org=34849bffb64202a2</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;query&quot;: &quot;from(bucket:\&quot;metrics_1m\&quot;) |&gt; range(start:-1h) |&gt; filter(fn:(r) =&gt; r._measurement == \&quot;total_errors_count\&quot;) |&gt; aggregateWindow(every: 1m, fn: mean)&quot;&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/v2/query?org=34849bffb64202a2</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;query&quot;: &quot;from(bucket:\&quot;metrics_1m\&quot;) |&gt; range(start:-1h) |&gt; filter(fn:(r) =&gt; r._measurement == \&quot;total_duration_avg\&quot;) |&gt; aggregateWindow(every: 1m, fn: mean)&quot;&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/v2/query?org=34849bffb64202a2</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;query&quot;: &quot;from(bucket:\&quot;metrics_1m\&quot;) |&gt; range(start:-1h) |&gt; filter(fn:(r) =&gt; r._measurement == \&quot;total_billed_duration_avg\&quot;) |&gt; aggregateWindow(every: 1m, fn: mean)&quot;&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/v2/query?org=34849bffb64202a2</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;query&quot;: &quot;from(bucket:\&quot;metrics_1m\&quot;) |&gt; range(start:-1h) |&gt; filter(fn:(r) =&gt; r._measurement == \&quot;total_memory_avg\&quot;) |&gt; aggregateWindow(every: 1m, fn: mean)&quot;&#xd;
+}&#xd;
+</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/api/v2/query?org=34849bffb64202a2</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+      <PostThreadGroup guiclass="PostThreadGroupGui" testclass="PostThreadGroup" testname="cleanup" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+      </PostThreadGroup>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/api/v2/buckets/metrics_1m</stringProp>
+          <stringProp name="HTTPSampler.method">DELETE</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="TestPlan.comments">Delete bucket with old data</stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__threadGroupName}" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+	&quot;name&quot;: &quot;metrics_1m&quot;,&#xd;
+	&quot;retentionRules&quot;: [{&#xd;
+		&quot;type&quot;: &quot;expire&quot;,&#xd;
+		&quot;everySeconds&quot;: 86400&#xd;
+}	]&#xd;
+}&#xd;
+</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">application/json</stringProp>
+          <stringProp name="HTTPSampler.path">/api/v2/buckets</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+      </hashTree>
+      <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+        <collectionProp name="HeaderManager.headers">
+          <elementProp name="" elementType="Header">
+            <stringProp name="Header.name">Content-Type</stringProp>
+            <stringProp name="Header.value">text/plain</stringProp>
+          </elementProp>
+          <elementProp name="" elementType="Header">
+            <stringProp name="Header.name">Authorization</stringProp>
+            <stringProp name="Header.value"></stringProp>
+          </elementProp>
+        </collectionProp>
+      </HeaderManager>
+      <hashTree/>
+      <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
+        <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+          <collectionProp name="Arguments.arguments"/>
+        </elementProp>
+        <stringProp name="HTTPSampler.domain">us-west-2-1.aws.cloud2.influxdata.com</stringProp>
+        <stringProp name="HTTPSampler.port"></stringProp>
+        <stringProp name="HTTPSampler.protocol">https</stringProp>
+        <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+        <stringProp name="HTTPSampler.path"></stringProp>
+        <stringProp name="HTTPSampler.concurrentPool">6</stringProp>
+        <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+        <stringProp name="HTTPSampler.response_timeout"></stringProp>
+      </ConfigTestElement>
+      <hashTree/>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
